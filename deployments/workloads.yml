@@ -14,9 +14,8 @@ spec:
         app: active-mq
     spec:
       containers:
-        - name: webapp
+        - name: active-mq
           image: richardchesterwood/k8s-fleetman-queue:release1
-
 
 ---
 apiVersion: apps/v1
@@ -85,4 +84,24 @@ spec:
           env:
             - name: SPRING_PROFILES_ACTIVE
               value: production-microservice
-    
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: angular-webapp
+spec:
+  selector:
+    matchLabels:
+      app: angular-webapp
+  replicas: 1
+  template: # template for the pods
+    metadata:
+      labels:
+        app: angular-webapp
+    spec:
+      containers:
+      - name: angular-webapp
+        image: richardchesterwood/k8s-fleetman-webapp-angular:release1
+        env:
+        - name: SPRING_PROFILES_ACTIVE
+          value: production-microservice
